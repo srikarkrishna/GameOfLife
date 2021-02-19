@@ -4,6 +4,7 @@ public class LifeGrid {
     int gridRows;
     int gridColumns;
 
+    // Initial grid structure and setting all cell values to 0(dead).
     public LifeGrid(int xPanel, int yPanel, int cellSize) {
         gridRows = xPanel / cellSize;
         gridColumns = yPanel / cellSize;
@@ -17,7 +18,7 @@ public class LifeGrid {
         spawnStartShape();
     }
 
-
+    // Default cell patterns to be displayed on the game screen before starting the game.
     public void spawnStartShape() {
         int selectRandomX = getRandomX();
         int selectRandomY = getRandomY();
@@ -40,6 +41,7 @@ public class LifeGrid {
         currentCellState[xCell][yCell].updateCellState(1);
     }
 
+    // Change the state of the cell from dead to alive or vice versa on click event.
     public void updateClickedCellState(int xCell, int yCell) {
         if (currentCellState[xCell][yCell].getCellState() == 0) {
             currentCellState[xCell][yCell].updateCellState(1);
@@ -48,6 +50,7 @@ public class LifeGrid {
         }
     }
 
+    // Based on the values of neighbours the next state is computed for each cell.
     public void computeNextState() {
         int countLiveNeighbors;
         for (int x = 0; x < currentCellState.length; x++) {
@@ -64,6 +67,8 @@ public class LifeGrid {
         }
     }
 
+
+    // Function to check the state of cell, whether the cell is alive or dead.
     private int checkCellState(int xCell, int yCell) {
         int countLiveNeighbors = 0;
         for (int k = (Math.max(xCell - 1, 0)); k <= Math.min(xCell + 1, gridRows - 1); k++) {
@@ -79,6 +84,8 @@ public class LifeGrid {
         return countLiveNeighbors;
     }
 
+
+    // Function to return to initial state in the game.
     public void resetGridState() {
         for (Cell[] cells : currentCellState) {
             for (int yCell = 0; yCell < gridColumns; yCell++) {
@@ -87,6 +94,8 @@ public class LifeGrid {
         }
     }
 
+
+    // Save the current state of the grid.
     public void saveGridState() {
         for (Cell[] cells : currentCellState) {
             for (int yCell = 0; yCell < gridColumns; yCell++) {
@@ -95,6 +104,7 @@ public class LifeGrid {
         }
     }
 
+    // Updating and computing the grid state.
     public void updateGridState() {
         computeNextState();
         saveGridState();

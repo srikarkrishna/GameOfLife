@@ -6,13 +6,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 
 public class LifePanel extends JPanel implements ActionListener,
         MouseListener,
-        MouseMotionListener,
-        KeyListener {
+        MouseMotionListener {
 
     int xPanel = 1920;
     int yPanel = 1080;
@@ -28,7 +26,6 @@ public class LifePanel extends JPanel implements ActionListener,
         lifeGrid = new LifeGrid(xPanel, yPanel, cellSize);
         addMouseMotionListener(this);
         addMouseListener(this);
-        addKeyListener(this);
         JButton startButton = new JButton("Start");
         JButton resetButton = new JButton("Reset");
         startButton.addActionListener(new ActionListener() {
@@ -55,7 +52,7 @@ public class LifePanel extends JPanel implements ActionListener,
             }
         });
 
-        JToolBar gameToolBar = new JToolBar("Tools");
+        JToolBar gameToolBar = new JToolBar("Tools"); // For adding buttons to start and reset the game.
         gameToolBar.add(startButton);
         gameToolBar.add(resetButton);
         this.add(gameToolBar);
@@ -67,6 +64,7 @@ public class LifePanel extends JPanel implements ActionListener,
 
     }
 
+    // Used for filling colors in grid and rectangles.
     public void paintComponent(Graphics view) {
         super.paintComponent(view);
         setBackground(Color.BLACK);
@@ -74,6 +72,7 @@ public class LifePanel extends JPanel implements ActionListener,
         display(view);
     }
 
+    //Displaying grid and creating simple rows and columns of same size.
     public void grid(Graphics view) {
         view.setColor(Color.DARK_GRAY);
         for (int i = 0; i < (xPanel / cellSize); i++) {
@@ -82,8 +81,10 @@ public class LifePanel extends JPanel implements ActionListener,
         }
     }
 
+    // Displaying grid using Graphics
+    // and filling colors in squares when a click is performed.
     private void display(Graphics view) {
-        view.setColor(Color.GRAY);
+        view.setColor(Color.ORANGE);
         lifeGrid.saveGridState();
         for (int x = 0; x < xPanel / cellSize; x++) {
             for (int y = 0; y < (yPanel / cellSize); y++) {
@@ -94,6 +95,8 @@ public class LifePanel extends JPanel implements ActionListener,
         }
     }
 
+    // Action performed is used to paint the cells
+    // and show the score based on event performed.
     public void actionPerformed(ActionEvent e) {
         LifePanel.iterator += 1;
         lifeGrid.updateGridState();
@@ -101,7 +104,7 @@ public class LifePanel extends JPanel implements ActionListener,
         System.out.println(LifePanel.iterator);
     }
 
-
+    // On click event
     public void mousePressed(MouseEvent e) {
         int xClicked = e.getX() / cellSize;
         int yClicked = e.getY() / cellSize;
@@ -114,15 +117,6 @@ public class LifePanel extends JPanel implements ActionListener,
     }
 
     public void mouseDragged(MouseEvent e) {
-    }
-
-    public void keyPressed(KeyEvent e) {
-    }
-
-    public void keyTyped(KeyEvent e) {
-    }
-
-    public void keyReleased(KeyEvent e) {
     }
 
     public void mouseEntered(MouseEvent e) {

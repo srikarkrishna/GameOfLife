@@ -1,3 +1,4 @@
+// Class to maintain all the actions to be performed on cells.
 public class Cell {
     int currentState = 0;
     int nextState;

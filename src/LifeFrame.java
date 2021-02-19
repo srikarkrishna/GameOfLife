@@ -2,6 +2,9 @@ import javax.swing.*;
 
 public class LifeFrame extends JFrame {
 
+
+    // Creating frame for adding grids in it
+    // and performing different actions in those grids.
     public LifeFrame() {
 
         add(new LifePanel());
