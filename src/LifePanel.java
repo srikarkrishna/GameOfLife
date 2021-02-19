@@ -9,45 +9,35 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 
-public class LifePanel extends JPanel implements    ActionListener,
-                                                    MouseListener,
-                                                    MouseMotionListener,
-                                                    KeyListener {
+public class LifePanel extends JPanel implements ActionListener,
+        MouseListener,
+        MouseMotionListener,
+        KeyListener {
 
     int xPanel = 1920;
     int yPanel = 1080;
-
-    int cellSize =20;
-    int xWidth = xPanel / cellSize;
-    int yHeight = yPanel / cellSize;
-
-    int[][] lifeMatrix = new int[xWidth][yHeight];
-    int[][] beforeLife = new int[xWidth][yHeight];
-
-    boolean starts = true;
+    int cellSize = 20;
+    LifeGrid lifeGrid;
     Timer time;
     public static int iterator = 0;
 
-    public LifePanel(){
+    public LifePanel() {
 
         setSize(xPanel, yPanel);
         setLayout(null);
-
+        lifeGrid = new LifeGrid(xPanel, yPanel, cellSize);
         addMouseMotionListener(this);
         addMouseListener(this);
         addKeyListener(this);
-
         JButton startButton = new JButton("Start");
         JButton resetButton = new JButton("Reset");
-
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(startButton.getText().equals("Start")){
+                if (startButton.getText().equals("Start")) {
                     time.start();
                     startButton.setText("Stop");
-                }
-                else{
+                } else {
                     time.stop();
                     startButton.setText("Start");
                 }
@@ -57,221 +47,94 @@ public class LifePanel extends JPanel implements    ActionListener,
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                clear();
+                lifeGrid.resetGridState();
                 startButton.setText("Start");
                 time.stop();
-                spawn();
+                lifeGrid.spawnStartShape();
+                repaint();
             }
         });
 
-        JToolBar jt = new JToolBar("Tools");
-
-        jt.add(startButton);
-        jt.add(resetButton);
-        this.add(jt);
-
-        this.setLayout (new BorderLayout());
-        this.add (jt, BorderLayout.SOUTH);
-
+        JToolBar gameToolBar = new JToolBar("Tools");
+        gameToolBar.add(startButton);
+        gameToolBar.add(resetButton);
+        this.add(gameToolBar);
+        this.setLayout(new BorderLayout());
+        this.add(gameToolBar, BorderLayout.SOUTH);
         setFocusable(true);
-
         time = new Timer(500, this);
-//        time.start();
-        spawn();
+        repaint();
 
     }
 
-    public void paintComponent(Graphics g){
-
-        super.paintComponent(g);
+    public void paintComponent(Graphics view) {
+        super.paintComponent(view);
         setBackground(Color.BLACK);
-//        g.setColor(Color.GRAY);
-        grid(g);
-//        spawn(g);
-        display(g);
+        grid(view);
+        display(view);
     }
 
-    public void setAlive(int x, int y){
-        beforeLife[x][y] = 1;
-    }
-
-    public void grid(Graphics g){
-
-        g.setColor(Color.DARK_GRAY);
-        for(int i = 0; i < (lifeMatrix.length) ; i++){
-
-            g.drawLine(0, i*cellSize, xPanel, i*cellSize);
-            g.drawLine(i*cellSize,0,i*cellSize, yPanel);
-
-        }
-
-    }
-
-    private void spawn(){
-        int selectRandomX = getRandomX();
-        int selectRandomY = getRandomY();
-        setAlive(selectRandomX,selectRandomY);
-        setAlive(selectRandomX+1,selectRandomY-1);
-        setAlive(selectRandomX-1,selectRandomY-2);
-        setAlive(selectRandomX,selectRandomY-2);
-        setAlive(selectRandomX+1,selectRandomY-2);
-        repaint();
-    }
-
-    private int getRandomX() {
-        return ((int) (Math.random() * (xWidth / 3))) + xWidth / 4;
-    }
-
-    private int getRandomY() {
-        return  ((int) (Math.random() * (yHeight / 3))) + (yHeight / 4);
-    }
-
-    private void copyArray(){
-        for (int x = 0; x < lifeMatrix.length; x++){
-
-            for (int y = 0; y < (yPanel/cellSize); y++){
-
-                lifeMatrix[x][y] = beforeLife[x][y];
-            }
+    public void grid(Graphics view) {
+        view.setColor(Color.DARK_GRAY);
+        for (int i = 0; i < (xPanel / cellSize); i++) {
+            view.drawLine(0, i * cellSize, xPanel, i * cellSize);
+            view.drawLine(i * cellSize, 0, i * cellSize, yPanel);
         }
     }
 
-    private void display(Graphics g){
-        g.setColor(Color.GRAY);
-        copyArray();
-
-        for (int x = 0; x < lifeMatrix.length; x++){
-
-            for (int y = 0; y < (yPanel/cellSize); y++){
-
-                if(lifeMatrix[x][y] == 1){
-                    g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+    private void display(Graphics view) {
+        view.setColor(Color.GRAY);
+        lifeGrid.saveGridState();
+        for (int x = 0; x < xPanel / cellSize; x++) {
+            for (int y = 0; y < (yPanel / cellSize); y++) {
+                if (lifeGrid.currentCellState[x][y].getCellState() == 1) {
+                    view.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
                 }
             }
         }
     }
 
-
-    private int check(int x, int y){
-
-        int countAlive = 0;
-
-//        countAlive += lifeMatrix[x-1][y-1];
-//        countAlive += lifeMatrix[x][y-1];
-//        countAlive += lifeMatrix[x+1][y-1];
-//        countAlive += lifeMatrix[x-1][y];
-//        countAlive += lifeMatrix[x+1][y];
-//        countAlive += lifeMatrix[x-1][y+1];
-//        countAlive += lifeMatrix[x][y+1];
-//        countAlive += lifeMatrix[x+1][y+1];
-/*
-        countAlive += lifeMatrix[(x-1 + xWidth) % xWidth][(y + yHeight-1) % yHeight];
-        countAlive += lifeMatrix[(x+ xWidth)% xWidth][(y-1+yHeight) % yHeight];
-
-        countAlive += lifeMatrix[(x+1+ xWidth)% xWidth][(y-1+yHeight) % yHeight];
-        countAlive += lifeMatrix[(x-1+ xWidth)% xWidth][(y +yHeight) % yHeight];
-
-        countAlive += lifeMatrix[(x+1+ xWidth)% xWidth][(y+yHeight) % yHeight];
-        countAlive += lifeMatrix[(x-1+ xWidth)% xWidth][(y+1+yHeight) % yHeight];
-
-        countAlive += lifeMatrix[(x+ xWidth)% xWidth][(y+1+yHeight) % yHeight];
-        countAlive += lifeMatrix[(x+1+ xWidth)% xWidth][(y+1+yHeight) % yHeight];*/
-        for(int k = (Math.max(x - 1, 0)); k<=Math.min(x + 1,xWidth-1); k++)
-        {
-            for(int l = (Math.max(y - 1, 0)); l<=Math.min(y + 1,yHeight-1); l++)
-            {
-                if(lifeMatrix[k][l]>0)
-                {
-                    countAlive++;
-                }
-            }
-        }
-        if(lifeMatrix[x][y]>0)
-        {
-            countAlive--;
-        }
-        return countAlive;
-    }
-
-    public void clear(){
-
-        System.out.println("Pressed reset");
-
-        for (int x = 0; x < lifeMatrix.length; x++){
-
-            for (int y = 0; y < yHeight; y++){
-                    beforeLife[x][y] = 0;
-            }
-        }
-
-        repaint();
-
-    }
-
-//    public void startButton(ActionEvent e){
-//        time.start();
-//    }
-
-    public void actionPerformed(ActionEvent e){
-
-        int countAlive;
+    public void actionPerformed(ActionEvent e) {
         LifePanel.iterator += 1;
-
-        for (int x = 0; x < lifeMatrix.length; x++){
-
-            for (int y = 0; y < (yPanel/cellSize); y++){
-
-                countAlive = check(x,y);
-
-                if (countAlive == 3){
-                    beforeLife[x][y] = 1;
-                }
-                else if (countAlive == 2 && lifeMatrix[x][y] == 1){
-                    beforeLife[x][y] = 1;
-                }
-                else {
-                    beforeLife[x][y] = 0;
-                }
-            }
-        }
+        lifeGrid.updateGridState();
         repaint();
         System.out.println(LifePanel.iterator);
     }
 
 
-    public void mousePressed(MouseEvent e){
-
-        int x = e.getX() / cellSize;
-        int y = e.getY() / cellSize;
-        //  time.stop();
-
-
-        if (lifeMatrix[x][y] == 0){
-            beforeLife[x][y] = 1;
-        }
-
-        else if (lifeMatrix[x][y] == 1){
-            beforeLife[x][y] = 0;
-        }
+    public void mousePressed(MouseEvent e) {
+        int xClicked = e.getX() / cellSize;
+        int yClicked = e.getY() / cellSize;
+        lifeGrid.updateClickedCellState(xClicked, yClicked);
         repaint();
 
     }
 
-    public void mouseReleased(MouseEvent e){ }
+    public void mouseReleased(MouseEvent e) {
+    }
 
-    public void mouseDragged(MouseEvent e){ }
-    public void keyPressed(KeyEvent e){ }
+    public void mouseDragged(MouseEvent e) {
+    }
 
-    public void keyTyped(KeyEvent e){ }
+    public void keyPressed(KeyEvent e) {
+    }
 
-    public void keyReleased(KeyEvent e){ }
+    public void keyTyped(KeyEvent e) {
+    }
 
-    public void mouseEntered(MouseEvent e){ }
+    public void keyReleased(KeyEvent e) {
+    }
 
-    public void mouseExited(MouseEvent e){ }
+    public void mouseEntered(MouseEvent e) {
+    }
 
-    public void mouseMoved(MouseEvent e){ }
+    public void mouseExited(MouseEvent e) {
+    }
 
-    public void mouseClicked(MouseEvent e){ }
+    public void mouseMoved(MouseEvent e) {
+    }
+
+    public void mouseClicked(MouseEvent e) {
+    }
 
 }
