@@ -9,7 +9,7 @@ public class LifeGrid {
         gridColumns = yPanel / cellSize;
         currentCellState = new Cell[gridRows][gridColumns];
         for (int xCell = 0; xCell < currentCellState.length; xCell++) {
-            for (int yCell = 0; yCell < currentCellState[yCell].length; yCell++) {
+            for (int yCell = 0; yCell < currentCellState[xCell].length; yCell++) {
                 currentCellState[xCell][yCell] = new Cell();
                 currentCellState[xCell][yCell].updateCellState(0);
             }
