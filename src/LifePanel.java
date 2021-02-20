@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.KeyEvent;
 
 
 public class LifePanel extends JPanel implements ActionListener,
@@ -23,10 +22,12 @@ public class LifePanel extends JPanel implements ActionListener,
 
         setSize(xPanel, yPanel);
         setLayout(null);
+
         lifeGrid = new LifeGrid(xPanel, yPanel, cellSize);
         addMouseMotionListener(this);
         addMouseListener(this);
         JButton startButton = new JButton("Start");
+        startButton.setPreferredSize(new Dimension(100,50));
         JButton resetButton = new JButton("Reset");
         startButton.addActionListener(new ActionListener() {
             @Override

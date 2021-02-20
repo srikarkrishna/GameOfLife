@@ -8,15 +8,10 @@ public class LifeFrame extends JFrame {
     public LifeFrame() {
 
         add(new LifePanel());
-
-//        button1.setBounds(960,810,100,50);
-//        button2.setBounds(1060,810,100,50);
-
-//        this.getContentPane().add(panel);
-
-
+        setTitle("Game of Life");
         setSize(1366, 768);
         setVisible(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
