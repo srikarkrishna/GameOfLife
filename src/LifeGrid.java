@@ -24,10 +24,10 @@ public class LifeGrid {
         int selectRandomX = getRandomX();
         int selectRandomY = getRandomY();
         setAlive(selectRandomX, selectRandomY);
+        setAlive(selectRandomX + 1, selectRandomY);
+        setAlive(selectRandomX - 1, selectRandomY);
         setAlive(selectRandomX + 1, selectRandomY - 1);
-        setAlive(selectRandomX - 1, selectRandomY - 2);
         setAlive(selectRandomX, selectRandomY - 2);
-        setAlive(selectRandomX + 1, selectRandomY - 2);
     }
 
     private int getRandomX() {

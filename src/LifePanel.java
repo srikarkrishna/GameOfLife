@@ -19,6 +19,7 @@ public class LifePanel extends JPanel implements ActionListener,
     Timer time;
     JButton startButton;
     JButton resetButton;
+    JLabel jLabel;
 
     public static int iterator = 0;
 
@@ -51,13 +52,18 @@ public class LifePanel extends JPanel implements ActionListener,
                 startButton.setText("Start");
                 time.stop();
                 lifeGrid.spawnStartShape();
+                LifePanel.iterator = 0;
+                updateJLabel();
                 repaint();
             }
         });
 
+        jLabel = new JLabel();
+        updateJLabel();
         JToolBar gameToolBar = new JToolBar("Tools"); // For adding buttons to start and reset the game.
         gameToolBar.add(startButton);
         gameToolBar.add(resetButton);
+        gameToolBar.add(jLabel);
         this.add(gameToolBar);
         this.setLayout(new BorderLayout());
         this.add(gameToolBar, BorderLayout.SOUTH);
@@ -67,7 +73,11 @@ public class LifePanel extends JPanel implements ActionListener,
 
     }
 
-    // Used for filling colors in grid and rectangles.
+    // Used to update the Iterations jLabel displayed in the toolbar.
+    public void updateJLabel() {
+        jLabel.setText("   "+"Iterations: "+LifePanel.iterator+" ");
+    }
+
     public void paintComponent(Graphics view) {
         super.paintComponent(view);
         setBackground(Color.BLACK);
@@ -104,7 +114,7 @@ public class LifePanel extends JPanel implements ActionListener,
         LifePanel.iterator += 1;
         lifeGrid.updateGridState();
         repaint();
-        System.out.println(LifePanel.iterator);
+        updateJLabel();
     }
 
     // On click event
