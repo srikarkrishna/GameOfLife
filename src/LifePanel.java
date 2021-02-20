@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.awt.event.KeyEvent;
 
 
 public class LifePanel extends JPanel implements ActionListener,
@@ -32,6 +31,11 @@ public class LifePanel extends JPanel implements ActionListener,
         addMouseListener(this);
         startButton = new Button("Start");
         resetButton = new Button("Reset");
+
+        startButton.setPreferredSize(new Dimension(80,60));
+        resetButton.setPreferredSize(new Dimension(80,60));
+
+
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -64,6 +68,7 @@ public class LifePanel extends JPanel implements ActionListener,
         gameToolBar.add(startButton);
         gameToolBar.add(resetButton);
         gameToolBar.add(jLabel);
+        gameToolBar.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.add(gameToolBar);
         this.setLayout(new BorderLayout());
         this.add(gameToolBar, BorderLayout.SOUTH);
