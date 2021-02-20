@@ -10,6 +10,7 @@ public class LifeFrame extends JFrame {
         add(new LifePanel());
         setSize(1366, 768);
         setVisible(true);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 

@@ -9,10 +9,10 @@ public class Button extends JButton {
     }
     @Override
     public Dimension getMaximumSize() {
-        return new Dimension(100,40);
+        return new Dimension(100,50);
     }
     @Override
     public Dimension getMinimumSize() {
-        return new Dimension(100,40);
+        return new Dimension(100,50);
     }
 }
