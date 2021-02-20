@@ -5,7 +5,12 @@ public class LifeGrid {
     int gridRows;
     int gridColumns;
 
-    // Initial grid structure and setting all cell values to 0(dead).
+    /*************************************************************************************
+     *  - public Constructor
+     *  - Author : Sulabh
+     *  - Creation Date : 14/02/2021
+     *  - Desc: Instantiating a grid with an initial pattern and assigning the values to the cells
+     ***************************************************************************************/
     public LifeGrid(int xPanel, int yPanel, int cellSize) {
         gridRows = xPanel / cellSize;
         gridColumns = yPanel / cellSize;
@@ -18,8 +23,14 @@ public class LifeGrid {
         }
         spawnStartShape();
     }
-
-    // Default cell patterns to be displayed on the game screen before starting the game.
+    /*****************************************************************
+     *  - Method Name: spawnStartShape()
+     *  - Input Parameters :
+     *  - Return Type : void
+     *  - Author : Sneha
+     *  - Creation Date : 16/02/2021
+     *  - Description : Generate a default cell pattern to be displayed at the starting of the game and every reset.
+     *******************************************************************/
     public void spawnStartShape() {
         int selectRandomX = getRandomX();
         int selectRandomY = getRandomY();
@@ -29,20 +40,27 @@ public class LifeGrid {
         setAlive(selectRandomX + 1, selectRandomY - 1);
         setAlive(selectRandomX, selectRandomY - 2);
     }
-
+    //Generate a random X co-ordinate
     private int getRandomX() {
         return ((int) (Math.random() * (gridRows / 3))) + gridRows / 4;
     }
-
+    //Generate a random Y co-ordinate
     private int getRandomY() {
         return ((int) (Math.random() * (gridColumns / 3))) + (gridColumns / 4);
     }
-
+    //Set a cell state to Alive
     public void setAlive(int xCell, int yCell) {
         currentCellState[xCell][yCell].updateCellState(1);
     }
 
-    // Change the state of the cell from dead to alive or vice versa on click event.
+    /*****************************************************************
+     *  - Method Name: updateClickedCellState()
+     *  - Input Parameters :  X,Y Co-ordinates
+     *  - Return Type : void
+     *  - Author : Srikar
+     *  - Creation Date : 16/02/2021
+     *  - Description :  Update the state of the cell based on the current state.
+     *******************************************************************/
     public void updateClickedCellState(int xCell, int yCell) {
         if (currentCellState[xCell][yCell].getCellState() == 0) {
             currentCellState[xCell][yCell].updateCellState(1);
@@ -51,7 +69,14 @@ public class LifeGrid {
         }
     }
 
-    // Based on the values of neighbours the next state is computed for each cell.
+    /*****************************************************************
+     *  - Method Name: computeNextState()
+     *  - Input Parameters :
+     *  - Return Type : void
+     *  - Author : Srikar
+     *  - Creation Date : 16/02/2021
+     *  - Description : Compute the next state of a cell based on the alive members in the neighboring cells.
+     *******************************************************************/
     public void computeNextState() {
         int countLiveNeighbors;
         for (int x = 0; x < currentCellState.length; x++) {
@@ -68,8 +93,14 @@ public class LifeGrid {
         }
     }
 
-
-    // Function to check the state of cell, whether the cell is alive or dead.
+    /*****************************************************************
+     *  - Method Name: checkCellState()
+     *  - Input Parameters : X,Y coordinates
+     *  - Return Type : int
+     *  - Author : Keshav
+     *  - Creation Date : 16/02/2021
+     *  - Description : Method to count the number of live neighbors to a cell.
+     *******************************************************************/
     private int checkCellState(int xCell, int yCell) {
         int countLiveNeighbors = 0;
         for (int k = (Math.max(xCell - 1, 0)); k <= Math.min(xCell + 1, gridRows - 1); k++) {
@@ -85,8 +116,14 @@ public class LifeGrid {
         return countLiveNeighbors;
     }
 
-
-    // Function to return to initial state in the game.
+    /*****************************************************************
+     *  - Method Name: resetGridState()
+     *  - Input Parameters :
+     *  - Return Type : void
+     *  - Author : Keshav
+     *  - Creation Date : 16/02/2021
+     *  - Description :  Method to reset all the cells to initial state in the game.
+     *******************************************************************/
     public void resetGridState() {
         for (Cell[] cells : currentCellState) {
             for (int yCell = 0; yCell < gridColumns; yCell++) {
@@ -95,8 +132,14 @@ public class LifeGrid {
         }
     }
 
-
-    // Save the current state of the grid.
+    /*****************************************************************
+     *  - Method Name: saveGridState()
+     *  - Input Parameters :
+     *  - Return Type : void
+     *  - Author : Sneha
+     *  - Creation Date : 16/02/2021
+     *  - Description :  Save the current state of a cell.
+     *******************************************************************/
     public void saveGridState() {
         for (Cell[] cells : currentCellState) {
             for (int yCell = 0; yCell < gridColumns; yCell++) {
@@ -104,8 +147,14 @@ public class LifeGrid {
             }
         }
     }
-
-    // Updating and computing the grid state.
+    /*****************************************************************
+     *  - Method Name: updateGridState()
+     *  - Input Parameters :
+     *  - Return Type : void
+     *  - Author : Sneha
+     *  - Creation Date : 16/02/2021
+     *  - Description :  Compute the next state and Update it with the next grid state.
+     *******************************************************************/
     public void updateGridState() {
         computeNextState();
         saveGridState();

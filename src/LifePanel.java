@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
-
 public class LifePanel extends JPanel implements ActionListener,
         MouseListener,
         MouseMotionListener {
@@ -22,6 +21,12 @@ public class LifePanel extends JPanel implements ActionListener,
 
     public static int iterator = 0;
 
+    /*************************************************************************************
+     *  - public Constructor
+     *  - Author : Samarth
+     *  - Creation Date : 14/02/2021
+     *  - Desc: Create the game GUI and control user events
+     ***************************************************************************************/
     public LifePanel() {
 
         setSize(xPanel, yPanel);
@@ -32,10 +37,7 @@ public class LifePanel extends JPanel implements ActionListener,
         startButton = new Button("Start");
         resetButton = new Button("Reset");
 
-        startButton.setPreferredSize(new Dimension(80,60));
-        resetButton.setPreferredSize(new Dimension(80,60));
-
-
+        //Event Listener for start button
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -48,7 +50,7 @@ public class LifePanel extends JPanel implements ActionListener,
                 }
             }
         });
-
+        //Event Listener for reset button
         resetButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -63,8 +65,8 @@ public class LifePanel extends JPanel implements ActionListener,
         });
 
         jLabel = new JLabel();
-        updateJLabel();
-        JToolBar gameToolBar = new JToolBar("Tools"); // For adding buttons to start and reset the game.
+        updateJLabel(); //initialize JLabel with zero.
+        JToolBar gameToolBar = new JToolBar("Tools"); // Toolbar for adding buttons to start and reset the game.
         gameToolBar.add(startButton);
         gameToolBar.add(resetButton);
         gameToolBar.add(jLabel);
@@ -78,20 +80,35 @@ public class LifePanel extends JPanel implements ActionListener,
 
     }
 
-    // Used to update the Iterations jLabel displayed in the toolbar.
+    // Used to update the Iterations label displayed in the toolbar.
     public void updateJLabel() {
-        jLabel.setText("   "+"Iterations: "+LifePanel.iterator+" ");
+        jLabel.setText("   " + "Iterations: " + LifePanel.iterator + " ");
     }
 
+    /*****************************************************************
+     *  - Method Name: paintComponent()
+     *  - Input Parameters : Graphic object
+     *  - Return Type :void
+     *  - Author : Samarth
+     *  - Creation Date : 15/02/2021
+     *  - Description : Assemble GUI methods
+     *******************************************************************/
     public void paintComponent(Graphics view) {
         super.paintComponent(view);
         setBackground(Color.BLACK);
-        grid(view);
-        display(view);
+        drawGrid(view);
+        fillCellColor(view);
     }
 
-    //Displaying grid and creating simple rows and columns of same size.
-    public void grid(Graphics view) {
+    /*****************************************************************
+     *  - Method Name: drawGrid()
+     *  - Input Parameters : Graphic object
+     *  - Return Type :void
+     *  - Author : Samarth
+     *  - Creation Date : 15/02/2021
+     *  - Description : Displaying grid and creating simple rows and columns of same size.
+     *******************************************************************/
+    public void drawGrid(Graphics view) {
         view.setColor(Color.DARK_GRAY);
         for (int i = 0; i < (xPanel / cellSize); i++) {
             view.drawLine(0, i * cellSize, xPanel, i * cellSize);
@@ -99,9 +116,15 @@ public class LifePanel extends JPanel implements ActionListener,
         }
     }
 
-    // Displaying grid using Graphics
-    // and filling colors in squares when a click is performed.
-    private void display(Graphics view) {
+    /*****************************************************************
+     *  - Method Name: fillCellColor()
+     *  - Input Parameters : Graphic object
+     *  - Return Type :void
+     *  - Author : Sulabh
+     *  - Creation Date : 15/02/2021
+     *  - Description : Displaying grid using Graphics and filling colors in squares when a click is performed.
+     *******************************************************************/
+    private void fillCellColor(Graphics view) {
         view.setColor(Color.ORANGE);
         lifeGrid.saveGridState();
         for (int x = 0; x < xPanel / cellSize; x++) {
@@ -113,8 +136,14 @@ public class LifePanel extends JPanel implements ActionListener,
         }
     }
 
-    // Action performed is used to paint the cells
-    // and show the score based on event performed.
+    /*****************************************************************
+     *  - Method Name: actionPerformed()
+     *  - Input Parameters : Action Event
+     *  - Return Type :void
+     *  - Author : Sulabh
+     *  - Creation Date : 15/02/2021
+     *  - Description :  Action performed is used to update state, change color of the cells and show the score based on event performed.
+     *******************************************************************/
     public void actionPerformed(ActionEvent e) {
         LifePanel.iterator += 1;
         lifeGrid.updateGridState();
@@ -122,7 +151,14 @@ public class LifePanel extends JPanel implements ActionListener,
         updateJLabel();
     }
 
-    // On click event
+    /*****************************************************************
+     *  - Method Name: mousePressed()
+     *  - Input Parameters : Mouse Event
+     *  - Return Type :void
+     *  - Author : Sulabh
+     *  - Creation Date : 15/02/2021
+     *  - Description :  Used to update state, change color of the cells and show the score based on mouse click event.
+     *******************************************************************/
     public void mousePressed(MouseEvent e) {
         int xClicked = e.getX() / cellSize;
         int yClicked = e.getY() / cellSize;
@@ -131,6 +167,7 @@ public class LifePanel extends JPanel implements ActionListener,
 
     }
 
+    //unused methods.
     public void mouseReleased(MouseEvent e) {
     }
 

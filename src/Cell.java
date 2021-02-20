@@ -1,5 +1,11 @@
 // Class to maintain all the actions to be performed on cells.
 public class Cell {
+    /*************************************************************************************
+     *  - public Class
+     *  - Author : Sneha
+     *  - Creation Date : 14/02/2021
+     *  - Desc: Defining the cell class and providing getters/setters to modify cell state.
+     ***************************************************************************************/
     int currentState = 0;
     int nextState;
 
