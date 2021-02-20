@@ -17,6 +17,9 @@ public class LifePanel extends JPanel implements ActionListener,
     int cellSize = 20;
     LifeGrid lifeGrid;
     Timer time;
+    JButton startButton;
+    JButton resetButton;
+
     public static int iterator = 0;
 
     public LifePanel() {
@@ -26,8 +29,8 @@ public class LifePanel extends JPanel implements ActionListener,
         lifeGrid = new LifeGrid(xPanel, yPanel, cellSize);
         addMouseMotionListener(this);
         addMouseListener(this);
-        JButton startButton = new JButton("Start");
-        JButton resetButton = new JButton("Reset");
+        startButton = new Button("Start");
+        resetButton = new Button("Reset");
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

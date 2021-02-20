@@ -1,3 +1,4 @@
+import java.lang.Math;
 public class LifeGrid {
 
     Cell[][] currentCellState;
